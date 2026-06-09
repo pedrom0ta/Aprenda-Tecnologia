@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Sobre o Projeto — Aprenda Tecnologia{% endblock %}
+
+{% block content %}
+<div class="page-hero py-5">
+  <div class="container text-center">
+    <i class="bi bi-info-circle display-4 text-accent mb-3 d-block"></i>
+    <h1 class="fw-800 text-white">Sobre o Projeto</h1>
+    <p class="text-secondary lead">Conheça nossa missão de democratizar o acesso à tecnologia</p>
+  </div>
+</div>
+
+<div class="container py-5">
+  <!-- Stats -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-4">
+      <div class="stat-card text-center">
+        <div class="stat-icon"><i class="bi bi-camera-video"></i></div>
+        <div class="stat-value">{{ total_aulas }}</div>
+        <div class="stat-label">Videoaulas</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card text-center">
+        <div class="stat-icon"><i class="bi bi-eye"></i></div>
+        <div class="stat-value">{{ total_views }}</div>
+        <div class="stat-label">Visualizações</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stat-card text-center">
+        <div class="stat-icon"><i class="bi bi-grid"></i></div>
+        <div class="stat-value">{{ total_cats }}</div>
+        <div class="stat-label">Categorias</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row g-5 align-items-center mb-5">
+    <div class="col-lg-6">
+      <h2 class="fw-800 mb-3">Nossa <span class="text-gradient">Missão</span></h2>
+      <p class="text-muted">O <strong>Aprenda Tecnologia</strong> é uma plataforma gratuita criada com o objetivo de tornar o aprendizado de informática acessível para todos os brasileiros, independente de idade, renda ou localização.</p>
+      <p class="text-muted">Acreditamos que o acesso à tecnologia é um direito e não um privilégio. Por isso, disponibilizamos videoaulas de alta qualidade sem nenhum custo.</p>
+      <div class="d-flex flex-wrap gap-2 mt-4">
+        <span class="badge-feature"><i class="bi bi-check2 me-1"></i>100% Gratuito</span>
+        <span class="badge-feature"><i class="bi bi-check2 me-1"></i>Sem Cadastro</span>
+        <span class="badge-feature"><i class="bi bi-check2 me-1"></i>Assista Quando Quiser</span>
+        <span class="badge-feature"><i class="bi bi-check2 me-1"></i>Para Todas as Idades</span>
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="about-visual">
+        <div class="about-card-float">
+          <i class="bi bi-people-fill text-accent fs-1 mb-2 d-block"></i>
+          <h6 class="fw-700">Inclusão Digital</h6>
+          <p class="small text-muted mb-0">Conteúdo acessível para todos</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tópicos -->
+  <h3 class="fw-800 text-center mb-4">O que você vai aprender?</h3>
+  <div class="row g-3 mb-5">
+    {% set topicos = [
+      ('bi-cpu', 'Montagem de Computadores', 'Aprenda a montar seu próprio computador do zero com segurança e economia.'),
+      ('bi-windows', 'Windows', 'Instale e configure o sistema operacional mais usado do mundo.'),
+      ('bi-shield-lock', 'Segurança Digital', 'Proteja seus dados, senhas e privacidade online.'),
+      ('bi-exclamation-triangle', 'Golpes na Internet', 'Reconheça e evite os principais tipos de golpes digitais.'),
+      ('bi-heart', 'Para Idosos', 'Conteúdo especial com linguagem simples e carinhosa para a terceira idade.'),
+    ] %}
+    {% for icone, titulo, desc in topicos %}
+    <div class="col-md-6 col-lg-4">
+      <div class="topic-card">
+        <i class="bi {{ icone }} topic-icon"></i>
+        <h6 class="fw-700 mt-3 mb-2">{{ titulo }}</h6>
+        <p class="small text-muted mb-0">{{ desc }}</p>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="col-md-6 col-lg-4">
+      <div class="topic-card topic-card-cta">
+        <i class="bi bi-plus-circle topic-icon"></i>
+        <h6 class="fw-700 mt-3 mb-2">Em Breve</h6>
+        <p class="small text-muted mb-0">Novos conteúdos são adicionados constantemente!</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg rounded-pill px-5">
+      <i class="bi bi-play-circle me-2"></i>Começar a Aprender
+    </a>
+  </div>
+</div>
+{% endblock %}

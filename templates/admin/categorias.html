@@ -1,0 +1,29 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Categorias — Admin{% endblock %}
+{% block page_title %}Gerenciar Categorias{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+  <div class="admin-card-header">
+    <h6 class="fw-700 mb-0"><i class="bi bi-grid me-2"></i>Categorias ({{ categorias|length }})</h6>
+    <a href="{{ url_for('admin_nova_categoria') }}" class="btn btn-primary btn-sm rounded-pill">
+      <i class="bi bi-plus me-1"></i>Nova Categoria
+    </a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover admin-table">
+      <thead><tr><th>Ícone</th><th>Nome</th><th>Descrição</th><th>Aulas</th></tr></thead>
+      <tbody>
+        {% for cat in categorias %}
+        <tr>
+          <td><i class="bi {{ cat.icone }} fs-5 text-accent"></i></td>
+          <td class="fw-600">{{ cat.nome }}</td>
+          <td class="text-muted small">{{ cat.descricao[:60] if cat.descricao else '—' }}</td>
+          <td><span class="badge bg-soft-primary">{{ cat.total_aulas }} aula(s)</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'admin/base_admin.html' %}
+{% block title %}Gerenciar Aulas — Admin{% endblock %}
+{% block page_title %}Gerenciar Videoaulas{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+  <div class="admin-card-header">
+    <h6 class="fw-700 mb-0"><i class="bi bi-camera-video me-2"></i>Todas as Videoaulas ({{ aulas|length }})</h6>
+    <a href="{{ url_for('admin_nova_aula') }}" class="btn btn-primary btn-sm rounded-pill">
+      <i class="bi bi-plus me-1"></i>Nova Aula
+    </a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover admin-table">
+      <thead>
+        <tr><th>Título</th><th>Categoria</th><th>YouTube</th><th>Visualizações</th><th>Data</th><th>Ações</th></tr>
+      </thead>
+      <tbody>
+        {% for aula in aulas %}
+        <tr>
+          <td><span class="fw-600">{{ aula.titulo[:50] }}{% if aula.titulo|length > 50 %}...{% endif %}</span></td>
+          <td><span class="badge bg-soft-primary"><i class="bi {{ aula.categoria.icone }} me-1"></i>{{ aula.categoria.nome }}</span></td>
+          <td><a href="{{ aula.youtube_url }}" target="_blank" class="text-danger small"><i class="bi bi-youtube me-1"></i>Ver vídeo</a></td>
+          <td><i class="bi bi-eye text-muted me-1"></i>{{ aula.visualizacoes }}</td>
+          <td class="text-muted small">{{ aula.criado_em.strftime('%d/%m/%Y') }}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{{ url_for('aula', id=aula.id) }}" class="btn btn-xs btn-outline-secondary" target="_blank" title="Visualizar"><i class="bi bi-eye"></i></a>
+              <a href="{{ url_for('admin_editar_aula', id=aula.id) }}" class="btn btn-xs btn-outline-primary" title="Editar"><i class="bi bi-pencil"></i></a>
+              <form method="POST" action="{{ url_for('admin_excluir_aula', id=aula.id) }}" onsubmit="return confirm('Tem certeza que deseja excluir esta aula? O arquivo de vídeo também será removido.')">
+                <button type="submit" class="btn btn-xs btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-center text-muted py-5">
+          <i class="bi bi-camera-video-off fs-1 d-block mb-2 opacity-25"></i>
+          Nenhuma aula cadastrada. <a href="{{ url_for('admin_nova_aula') }}">Cadastrar agora</a>
+        </td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

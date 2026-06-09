@@ -1,0 +1,141 @@
+/* ================================================
+   APRENDA TECNOLOGIA — Admin Stylesheet
+   ================================================ */
+
+/* ── LOGIN ── */
+.login-body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 1rem;
+}
+.login-container { width: 100%; max-width: 420px; }
+.login-card {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,.3);
+}
+.login-logo { text-align: center; padding-bottom: 1.5rem; border-bottom: 1px solid #e2e8f0; margin-bottom: 1.5rem; }
+.login-logo .brand-icon { margin: 0 auto; width: 52px; height: 52px; font-size: 1.4rem; }
+
+/* ── ADMIN LAYOUT ── */
+.admin-body { background: #f1f5f9; min-height: 100vh; }
+.admin-layout { display: flex; min-height: 100vh; }
+
+/* SIDEBAR */
+.admin-sidebar {
+  width: 240px;
+  background: #0f172a;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+.admin-brand {
+  padding: 1.25rem 1.5rem;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  border-bottom: 1px solid #1e293b;
+  display: flex; align-items: center; gap: .5rem;
+}
+.admin-brand strong { color: #f59e0b; }
+.admin-nav { padding: 1rem 0; flex: 1; }
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem 1.5rem;
+  color: rgba(255,255,255,.6);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: .9rem;
+  transition: all .2s;
+  border-left: 3px solid transparent;
+}
+.admin-nav-link:hover { color: #fff; background: rgba(255,255,255,.05); }
+.admin-nav-link.active { color: #fff; background: rgba(37,99,235,.2); border-left-color: #2563eb; }
+.admin-nav-link i { font-size: 1.1rem; width: 20px; text-align: center; }
+.admin-divider { border-color: #1e293b; margin: .5rem 1.5rem; }
+
+/* MAIN CONTENT */
+.admin-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.admin-topbar {
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.admin-content { padding: 1.5rem; flex: 1; }
+
+/* ── STAT CARDS ── */
+.admin-stat-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  border: 1px solid #e2e8f0;
+}
+.admin-stat-icon {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; color: #fff;
+  flex-shrink: 0;
+}
+.admin-stat-value { font-size: 1.75rem; font-weight: 900; color: #0f172a; display: block; line-height: 1; }
+.admin-stat-label { font-size: .8rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; }
+
+/* ── ADMIN CARD ── */
+.admin-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,.06);
+  border: 1px solid #e2e8f0;
+}
+.admin-card-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+}
+
+/* ── ADMIN TABLE ── */
+.admin-table { margin: 0; }
+.admin-table th { background: #f8fafc; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; color: #64748b; font-weight: 700; border-bottom: 2px solid #e2e8f0; }
+.admin-table td { vertical-align: middle; font-size: .9rem; }
+.bg-soft-primary { background: rgba(37,99,235,.1); color: #2563eb; font-weight: 700; }
+.btn-xs { padding: .2rem .5rem; font-size: .75rem; border-radius: 6px; }
+
+/* ── UPLOAD ZONE ── */
+.upload-zone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 2rem;
+  text-align: center;
+  transition: border-color .2s;
+  cursor: pointer;
+}
+.upload-zone:hover { border-color: #2563eb; }
+
+/* Responsive sidebar */
+@media (max-width: 992px) {
+  .admin-sidebar { position: fixed; z-index: 1000; transform: translateX(-100%); transition: transform .3s; }
+  .admin-sidebar.show { transform: translateX(0); }
+  .admin-content { padding: 1rem; }
+}

@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block title %}Aprenda Tecnologia — Videoaulas Gratuitas de Informática{% endblock %}
+
+{% block content %}
+<!-- HERO -->
+{% if not search and not categoria_selecionada %}
+<section class="hero-section">
+  <div class="hero-bg-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+    <div class="shape shape-3"></div>
+  </div>
+  <div class="container position-relative">
+    <div class="row align-items-center min-vh-hero">
+      <div class="col-lg-6">
+        <span class="badge badge-pill-accent mb-3"><i class="bi bi-broadcast-pin me-1"></i>100% Gratuito</span>
+        <h1 class="hero-title">Aprenda<br><span class="text-gradient">Tecnologia</span><br>do Zero!</h1>
+        <p class="hero-subtitle">Videoaulas gratuitas de informática para todos. Do básico ao avançado, aprenda no seu próprio ritmo.</p>
+        <div class="d-flex flex-wrap gap-3 mt-4">
+          <a href="#aulas" class="btn btn-primary btn-lg px-4 rounded-pill"><i class="bi bi-play-circle me-2"></i>Começar Agora</a>
+          <a href="{{ url_for('sobre') }}" class="btn btn-outline-light btn-lg px-4 rounded-pill">Saiba Mais</a>
+        </div>
+        <div class="hero-stats mt-5">
+          <div class="stat-item"><span class="stat-num">{{ aulas|length }}+</span><span class="stat-label">Aulas</span></div>
+          <div class="stat-item"><span class="stat-num">{{ categorias|length }}</span><span class="stat-label">Temas</span></div>
+          <div class="stat-item"><span class="stat-num">0%</span><span class="stat-label">Custo</span></div>
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-lg-flex justify-content-center">
+        <div class="hero-illustration">
+          <div class="monitor-frame">
+            <div class="monitor-screen">
+              <i class="bi bi-play-circle-fill"></i>
+              <span>Assistindo aula...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIAS -->
+<section class="py-5 bg-light-subtle">
+  <div class="container">
+    <div class="section-header text-center mb-5">
+      <h2 class="section-title">O que você quer aprender?</h2>
+      <p class="section-subtitle">Escolha uma área de interesse e comece agora mesmo</p>
+    </div>
+    <div class="row g-3 justify-content-center">
+      {% for cat in categorias %}
+      <div class="col-6 col-md-4 col-lg-2-4">
+        <a href="{{ url_for('categoria', id=cat.id) }}" class="category-card text-decoration-none">
+          <div class="cat-icon"><i class="bi {{ cat.icone }}"></i></div>
+          <div class="cat-name">{{ cat.nome }}</div>
+          <div class="cat-count">{{ cat.total_aulas }} aula{% if cat.total_aulas != 1 %}s{% endif %}</div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- PESQUISA E AULAS -->
+<section class="py-5" id="aulas">
+  <div class="container">
+    <!-- Barra de busca -->
+    <div class="search-bar-wrapper mb-5">
+      <form method="GET" action="{{ url_for('index') }}">
+        <div class="search-input-group">
+          <i class="bi bi-search search-icon"></i>
+          <input type="text" name="q" class="form-control search-input" placeholder="Pesquisar videoaulas..." value="{{ search }}">
+          <button type="submit" class="btn btn-primary search-btn">Buscar</button>
+          {% if search %}<a href="{{ url_for('index') }}" class="btn btn-outline-secondary search-clear"><i class="bi bi-x-lg"></i></a>{% endif %}
+        </div>
+      </form>
+    </div>
+
+    <!-- Filtros de categoria -->
+    <div class="category-pills mb-4">
+      <a href="{{ url_for('index') }}" class="cat-pill {% if not categoria_selecionada and not search %}active{% endif %}">
+        <i class="bi bi-grid-3x3 me-1"></i>Todas
+      </a>
+      {% for cat in categorias %}
+      <a href="{{ url_for('index', categoria=cat.id) }}" class="cat-pill {% if categoria_selecionada and categoria_selecionada.id == cat.id %}active{% endif %}">
+        <i class="bi {{ cat.icone }} me-1"></i>{{ cat.nome }}
+      </a>
+      {% endfor %}
+    </div>
+
+    <!-- Título da seção -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <div>
+        {% if search %}
+          <h3 class="section-title-sm">Resultados para "<em>{{ search }}</em>"</h3>
+          <p class="text-muted small">{{ aulas|length }} aula(s) encontrada(s)</p>
+        {% elif categoria_selecionada %}
+          <h3 class="section-title-sm"><i class="bi {{ categoria_selecionada.icone }} me-2 text-accent"></i>{{ categoria_selecionada.nome }}</h3>
+          <p class="text-muted small">{{ aulas|length }} aula(s) disponível(is)</p>
+        {% else %}
+          <h3 class="section-title-sm">Todas as Aulas</h3>
+          <p class="text-muted small">{{ aulas|length }} aula(s) disponível(is)</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Grid de aulas -->
+    {% if aulas %}
+    <div class="row g-4">
+      {% for aula in aulas %}
+      <div class="col-sm-6 col-lg-4">
+        <div class="aula-card">
+          <div class="aula-thumb" {% if aula.thumbnail_url %}style="background-image:url('{{ aula.thumbnail_url }}'); background-size:cover; background-position:center;"{% endif %}>
+            <div class="thumb-overlay">
+              <div class="play-btn"><i class="bi bi-play-fill"></i></div>
+            </div>
+            <div class="thumb-category"><i class="bi {{ aula.categoria.icone }} me-1"></i>{{ aula.categoria.nome }}</div>
+          </div>
+          <div class="aula-body">
+            <h5 class="aula-title">{{ aula.titulo }}</h5>
+            <p class="aula-desc">{{ aula.descricao[:110] }}{% if aula.descricao|length > 110 %}...{% endif %}</p>
+            <div class="aula-meta">
+              <span class="meta-item"><i class="bi bi-eye me-1"></i>{{ aula.visualizacoes }} visualizações</span>
+              <span class="meta-item"><i class="bi bi-calendar3 me-1"></i>{{ aula.criado_em.strftime('%d/%m/%Y') }}</span>
+            </div>
+            <a href="{{ url_for('aula', id=aula.id) }}" class="btn btn-primary w-100 mt-3 rounded-pill">
+              <i class="bi bi-play-circle me-2"></i>Assistir Aula
+            </a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state text-center py-5">
+      <div class="empty-icon"><i class="bi bi-camera-video-off"></i></div>
+      <h4 class="mt-3">Nenhuma aula encontrada</h4>
+      <p class="text-muted">{% if search %}Tente outros termos de busca.{% else %}Ainda não há aulas nesta categoria.{% endif %}</p>
+      <a href="{{ url_for('index') }}" class="btn btn-outline-primary rounded-pill mt-2">Ver todas as aulas</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+{% if not search and not categoria_selecionada %}
+<section class="cta-section py-5">
+  <div class="container text-center">
+    <div class="cta-box">
+      <i class="bi bi-mortarboard display-4 text-accent mb-3 d-block"></i>
+      <h3 class="fw-800 text-white mb-2">Comece sua jornada digital hoje!</h3>
+      <p class="text-secondary mb-4">Totalmente gratuito. Sem cadastro necessário. Aprenda quando e onde quiser.</p>
+      <a href="#aulas" class="btn btn-accent btn-lg rounded-pill px-5">
+        <i class="bi bi-rocket-takeoff me-2"></i>Explorar Aulas
+      </a>
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

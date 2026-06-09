@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% block title %}{{ aula.titulo }} — Aprenda Tecnologia{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+  <!-- Breadcrumb -->
+  <nav aria-label="breadcrumb" class="mb-4">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('index') }}" class="text-decoration-none"><i class="bi bi-house me-1"></i>Início</a></li>
+      <li class="breadcrumb-item"><a href="{{ url_for('categoria', id=aula.categoria.id) }}" class="text-decoration-none">{{ aula.categoria.nome }}</a></li>
+      <li class="breadcrumb-item active">{{ aula.titulo[:40] }}{% if aula.titulo|length > 40 %}...{% endif %}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-4">
+    <!-- Coluna principal -->
+    <div class="col-lg-8">
+      <!-- Player YouTube embed -->
+      <div class="video-player-wrapper mb-4">
+        {% if aula.embed_url %}
+        <iframe
+          src="{{ aula.embed_url }}"
+          title="{{ aula.titulo }}"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen
+          class="youtube-iframe">
+        </iframe>
+        {% else %}
+        <div class="video-error">
+          <i class="bi bi-exclamation-circle fs-1 text-warning d-block mb-2"></i>
+          <p class="mb-0">Não foi possível carregar o vídeo. URL inválida.</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Info da aula -->
+      <div class="aula-detail-card">
+        <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
+          <div>
+            <span class="badge bg-accent text-dark mb-2"><i class="bi {{ aula.categoria.icone }} me-1"></i>{{ aula.categoria.nome }}</span>
+            <h1 class="aula-detail-title">{{ aula.titulo }}</h1>
+          </div>
+          {% if current_user.is_authenticated %}
+          <div class="d-flex gap-2 flex-shrink-0">
+            <a href="{{ url_for('admin_editar_aula', id=aula.id) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil me-1"></i>Editar</a>
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="aula-meta-row mb-4">
+          <span class="meta-badge"><i class="bi bi-eye me-1"></i>{{ aula.visualizacoes }} visualizações</span>
+          <span class="meta-badge"><i class="bi bi-calendar3 me-1"></i>{{ aula.criado_em.strftime('%d de %B de %Y') }}</span>
+          <a href="{{ aula.youtube_url }}" target="_blank" class="meta-badge text-decoration-none">
+            <i class="bi bi-youtube text-danger me-1"></i>Ver no YouTube
+          </a>
+        </div>
+
+        <h5 class="fw-700 mb-3"><i class="bi bi-file-text me-2 text-accent"></i>Sobre esta aula</h5>
+        <div class="aula-description">{{ aula.descricao }}</div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+      <div class="sidebar-card mb-4">
+        <h6 class="sidebar-title"><i class="bi bi-collection-play me-2"></i>Aulas Relacionadas</h6>
+        {% if aulas_relacionadas %}
+          {% for rel in aulas_relacionadas %}
+          <a href="{{ url_for('aula', id=rel.id) }}" class="related-item">
+            {% if rel.thumbnail_url %}
+            <img src="{{ rel.thumbnail_url }}" alt="{{ rel.titulo }}" class="related-thumb-img">
+            {% else %}
+            <div class="related-thumb"><i class="bi bi-play-circle-fill"></i></div>
+            {% endif %}
+            <div class="related-info">
+              <div class="related-title">{{ rel.titulo[:55] }}{% if rel.titulo|length > 55 %}...{% endif %}</div>
+              <div class="related-meta"><i class="bi bi-eye me-1"></i>{{ rel.visualizacoes }}</div>
+            </div>
+          </a>
+          {% endfor %}
+        {% else %}
+          <p class="text-muted small text-center py-3">Nenhuma aula relacionada ainda.</p>
+        {% endif %}
+        <a href="{{ url_for('categoria', id=aula.categoria.id) }}" class="btn btn-outline-primary w-100 mt-3 btn-sm rounded-pill">
+          Ver todas de {{ aula.categoria.nome }}
+        </a>
+      </div>
+
+      <!-- Dicas -->
+      <div class="sidebar-card tips-card">
+        <h6 class="sidebar-title"><i class="bi bi-lightbulb me-2 text-warning"></i>Dicas de Estudo</h6>
+        <ul class="tips-list">
+          <li><i class="bi bi-check-circle-fill text-success me-2"></i>Assista com calma e pause quando precisar</li>
+          <li><i class="bi bi-check-circle-fill text-success me-2"></i>Repita os passos junto com o vídeo</li>
+          <li><i class="bi bi-check-circle-fill text-success me-2"></i>Anote os pontos mais importantes</li>
+          <li><i class="bi bi-check-circle-fill text-success me-2"></i>Não hesite em rever o vídeo quantas vezes quiser</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
